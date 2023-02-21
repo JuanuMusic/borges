@@ -20,6 +20,10 @@ class Scraper:
             from selenium.webdriver import Firefox
 
             self.driver = Firefox()
+        elif browser == "Chrome":
+            from selenium.webdriver import Chrome
+
+            self.driver = Chrome(options=options)
         # self._br.set_page_load_timeout(25)
 
     #def __del__(self):
@@ -39,7 +43,7 @@ class Scraper:
         # to get all links in page
         # link_elements = self.driver.find_elements_by_xpath(".//*/div/ul/li/a")
         # get only cuentos
-        link_elements = self.driver.find_elements_by_xpath(".//body/div/div/article/div/ul/li/a")
+        link_elements = self.driver.find_elements(By.XPATH,".//body/div/div/article/div/ul/li/a")
         links = [link.get_attribute('href') for link in link_elements]
         return links
 
@@ -51,7 +55,7 @@ class Scraper:
         html_class="text-justify"
     ):
         self.driver.get(url)
-        raw_text = self.driver.find_elements_by_xpath(
+        raw_text = self.driver.find_elements(By.XPATH,
             "//" + html_tag + '[@class="' + html_class + '"]'
         )
         content = raw_text[0].text
@@ -76,7 +80,7 @@ class Scraper:
 
 def build_dataset(*, links_file="./links.txt"):
     results = []
-    scr = Scraper()
+    scr = Scraper(browser='Chrome')
     with open(links_file, "r") as file:
         links = file.read().split("\n")
     links = links[:-1]

@@ -4,7 +4,7 @@ from scraper import Scraper
 
 
 def run():
-    scraper = Scraper()
+    scraper = Scraper(browser='Chrome')
     url = "https://ciudadseva.com/autor/leonora-carrington/cuentos/"
     text = scraper.get_links(url=url)
     author = "carrington"
